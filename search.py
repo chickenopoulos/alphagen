@@ -35,7 +35,7 @@ def run_genetic_search(
     )
 
     # Initialize population
-    population = [ga.create_individual() for _ in range(population_size)]
+    population = [ga.create_limited_individual() for _ in range(population_size)]
     fitness_scores = ga.fitness_parametrized(population)
     fit = pd.DataFrame({
         'individual': population,
@@ -68,7 +68,7 @@ def run_genetic_search(
         # Replace duplicates with new unique random individuals
         clean_population = pd.Series(population).drop_duplicates(keep='first').values.tolist()
         num_duplicates = population_size - len(clean_population)
-        population = clean_population + [ga.create_individual() for _ in range(num_duplicates)]
+        population = clean_population + [ga.create_limited_individual() for _ in range(num_duplicates)]
 
         # Evaluate new generation
         fitness_scores = ga.fitness_parametrized(population)
@@ -84,19 +84,19 @@ def run_genetic_search(
         # Update population logs
         poplogs = pd.concat([poplogs, fit])
 
-    poplogs.to_csv(f'/results/{poplogs_filename}')
+    poplogs.to_csv(f'./results/{poplogs_filename}')
     return poplogs
 
 if __name__ == '__main__':
     poplogs = run_genetic_search(asset='BTCUSDT',
-                                poplogs_filename='test_poplogs.csv',
+                                poplogs_filename='test_limited_poplogs.csv',
                                 mutation_rate=0.2,
                                 fitness_option='sharpe',
                                 n_trades_threshold_option='on',
-                                n_trades_threshold=50,
+                                n_trades_threshold=10,
                                 tournament_size=3,
                                 direction='L',
                                 hyperspace=hyperspace,
-                                population_size=1000,
-                                num_generations=1000,
+                                population_size=10,
+                                num_generations=10,
                                 close_data_path='../binance_futures_close_1d.csv')
