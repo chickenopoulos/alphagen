@@ -6,7 +6,6 @@ from tqdm import tqdm
 
 def run_genetic_search(
     asset='BTCUSDT',
-    poplogs_filename='test_non_limited_poplogs.csv',
     mutation_rate=0.2,
     fitness_option='linear_fit_adj_sharpe',
     n_trades_threshold_option='on',
@@ -16,8 +15,13 @@ def run_genetic_search(
     hyperspace=hyperspace,
     population_size=100,
     num_generations=100,
-    close_data_path='../binance_futures_close_1d.csv'
+    close_data_path='../binance_futures_close_1d.csv',
+    data_interval='1d',
+    individual_func='limited' # 'limited' or 'unlimited'
 ):
+    # Create poplogs filename from parameters
+    poplogs_filename = f"{asset}_{direction}_{fitness_option}_{population_size}_{data_interval}_{individual_func}.csv"
+    
     # Initialize GA
     close = pd.read_csv(close_data_path)
     close.set_index('Open time', inplace=True)
@@ -35,7 +39,11 @@ def run_genetic_search(
     )
 
     # Initialize population
-    population = [ga.create_limited_individual() for _ in range(population_size)]
+    if individual_func == 'limited':
+        generate_individual = ga.create_limited_individual
+    else:
+        generate_individual = ga.create_individual
+    population = [generate_individual() for _ in range(population_size)]
     fitness_scores = ga.fitness_parametrized(population)
     fit = pd.DataFrame({
         'individual': population,
@@ -68,7 +76,7 @@ def run_genetic_search(
         # Replace duplicates with new unique random individuals
         clean_population = pd.Series(population).drop_duplicates(keep='first').values.tolist()
         num_duplicates = population_size - len(clean_population)
-        population = clean_population + [ga.create_limited_individual() for _ in range(num_duplicates)]
+        population = clean_population + [generate_individual() for _ in range(num_duplicates)]
 
         # Evaluate new generation
         fitness_scores = ga.fitness_parametrized(population)
@@ -89,14 +97,12 @@ def run_genetic_search(
 
 if __name__ == '__main__':
     poplogs = run_genetic_search(asset='BTCUSDT',
-                                poplogs_filename='test_limited_poplogs.csv',
-                                mutation_rate=0.2,
-                                fitness_option='sharpe',
-                                n_trades_threshold_option='on',
-                                n_trades_threshold=10,
+                                n_trades_threshold=20,
                                 tournament_size=3,
                                 direction='L',
                                 hyperspace=hyperspace,
-                                population_size=10,
-                                num_generations=10,
-                                close_data_path='../binance_futures_close_1d.csv')
+                                population_size=100,
+                                num_generations=10000,  
+                                close_data_path='../binance_futures_close_1d.csv',
+                                data_interval='1d',
+                                individual_func='limited')
