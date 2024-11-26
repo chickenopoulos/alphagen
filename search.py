@@ -95,14 +95,3 @@ def run_genetic_search(
     poplogs.to_csv(f'./results/{poplogs_filename}')
     return poplogs
 
-if __name__ == '__main__':
-    poplogs = run_genetic_search(asset='BTCUSDT',
-                                n_trades_threshold=20,
-                                tournament_size=3,
-                                direction='L',
-                                hyperspace=hyperspace,
-                                population_size=100,
-                                num_generations=10000,  
-                                close_data_path='../binance_futures_close_1d.csv',
-                                data_interval='1d',
-                                individual_func='limited')
