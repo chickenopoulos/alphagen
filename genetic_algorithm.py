@@ -9,11 +9,15 @@ from signals import Signal
 
 class GeneticAlgorithm:
 
-    def __init__(self, hyperspace: Dict, close: pd.Series, direction: str = 'LS', 
+    def __init__(self, hyperspace: Dict, close: pd.Series, _open: pd.Series, high: pd.Series, low: pd.Series, volume: pd.Series, direction: str = 'LS', 
                  asset: str = None, fitness_option: str = 'sharpe',
                  n_trades_threshold_option: str = 'off', n_trades_threshold: int = 20):
         
         self.hyperspace = hyperspace
+        self._open = _open
+        self.high = high    
+        self.low = low
+        self.volume = volume
         self.close = close
         self.direction = direction
         self.asset = asset

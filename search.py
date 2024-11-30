@@ -6,6 +6,7 @@ from tqdm import tqdm
 
 def run_genetic_search(
     asset='BTCUSDT',
+    oos_timestamp='2023-01-01',
     mutation_rate=0.2,
     fitness_option='linear_fit_adj_sharpe',
     n_trades_threshold_option='on',
@@ -22,15 +23,26 @@ def run_genetic_search(
     # Create poplogs filename from parameters
     poplogs_filename = f"{asset}_{direction}_{fitness_option}_{population_size}_{data_interval}_{individual_func}.csv"
     
+    # Load OHLCV data
+    df = pd.read_csv(close_data_path)
+    df.set_index('time', inplace=True)
+    df.index = pd.to_datetime(df.index)
+    df = df.loc[:oos_timestamp]
+    df.dropna(inplace=True)
+    close = df.Close.to_frame(name=asset)
+    _open = df.Open.to_frame(name=asset)
+    high = df.High.to_frame(name=asset)
+    low = df.Low.to_frame(name=asset)
+    volume = df.Volume.to_frame(name=asset)
+
     # Initialize GA
-    close = pd.read_csv(close_data_path)
-    close.set_index('Open time', inplace=True)
-    close.index = pd.to_datetime(close.index)
-    close = close[[asset]].loc['2021':]
-    
     ga = GeneticAlgorithm(
         hyperspace=hyperspace,
         close=close,
+        _open=_open,
+        high=high,
+        low=low,
+        volume=volume,
         direction=direction,
         asset=asset,
         fitness_option=fitness_option,

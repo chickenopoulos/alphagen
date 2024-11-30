@@ -177,8 +177,6 @@ close_only_hyperspace = {
     'JMA':[{'window':[20, 50, 100, 200, 400]}, ['close']],
 }
 
-
-
 no_patterns = { 
 
     # indicator : [parameter range(s), threshold/comparator]
