@@ -6,6 +6,8 @@ AlphaGen is a framework that allows for optimal strategy search, using a custom 
 ## How to use
 Head over to the [Example.ipynb](notebooks/Example.ipynb) notebook for a step-by-step guide on how to use the framework.
 
-
-
+## Next Steps / Work in Progress
+- Add more robustness tests
+- Incorporate robustness testing in the genetic algorithm (at least those that can be vectorized)
+- Add more (non-parametric) indicators
 
