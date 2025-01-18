@@ -300,3 +300,22 @@ class GeneticAlgorithm:
         # Recombine with '$' separator
         return f'{entry_part} $ {exit_part}'
 
+    def get_individual_performance(self, individual: str) -> pd.Series:
+
+        i = self.explode_individual(individual)
+        entries = eval(i.split('$')[0])
+        exits = eval(i.split('$')[1])
+        _price = self.close.copy()
+        
+        entries.index.name = 'date'
+        exits.index.name = 'date'
+        _price.index.name = 'date'
+        
+        if self.direction == 'L':
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, exits=exits, fees=0.001)
+        elif self.direction == 'S':
+            pf = vbt.Portfolio.from_signals(_price, short_entries=entries, short_exits=exits, fees=0.001)
+        elif self.direction == 'LS':
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, short_entries=exits, fees=0.001)
+
+        return pf

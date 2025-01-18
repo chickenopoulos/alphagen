@@ -62,8 +62,8 @@ def run_genetic_search(
         'fitness_score': fitness_scores
     })
 
-    print('Initial population fitness scores:')
-    print(fit.fitness_score.describe())
+    # print('Initial population fitness scores:')
+    # print(fit.fitness_score.describe())
 
     # Run GA
     poplogs = pd.DataFrame()
@@ -98,12 +98,12 @@ def run_genetic_search(
             'generation': [generation] * len(population)
         })
 
-        print(f'Generation {generation} fitness scores:')
-        print(fit.fitness_score.describe())
+        # print(f'Generation {generation} fitness scores:')
+        # print(fit.fitness_score.describe())
 
         # Update population logs
         poplogs = pd.concat([poplogs, fit])
 
-    poplogs.to_csv(f'./results/{poplogs_filename}')
-    return poplogs
+    poplogs.to_csv(f'{poplogs_filename}')
+    return ga, poplogs
 
