@@ -1,7 +1,6 @@
 # AlphaGen: Evolutionary Trading Strategy Generation
 
-![trading_strategies](https://github.com/user-attachments/assets/d11965b9-a410-4ca5-9827-6fc9f03c558d)
-
+![progression](https://github.com/user-attachments/assets/d03e7087-cc34-4b8c-859d-c05bdfa72a53)
 
 ## Overview
 AlphaGen is a framework that allows for optimal strategy search, using a custom genetic algorithm. The repo includes a Robustness Testing framework as well, which serves as a tool for testing the robustness of the evolved strategies, using a list of (statistical) tests. 
