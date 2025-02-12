@@ -209,11 +209,11 @@ class GeneticAlgorithm:
         _price = pd.concat(_price, axis=1, join='outer')
             
         if self.direction == 'L':
-            pf = vbt.Portfolio.from_signals(_price, entries=entries, exits=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, exits=exits, fees=0.001, size=10)
         elif self.direction == 'S':
-            pf = vbt.Portfolio.from_signals(_price, short_entries=entries, short_exits=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, short_entries=entries, short_exits=exits, fees=0.001, size=10)
         elif self.direction == 'LS':
-            pf = vbt.Portfolio.from_signals(_price, entries=entries, short_entries=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, short_entries=exits, fees=0.001, size=10)
         
         return [pf.returns()[algo].apply(ep.sharpe_ratio).replace(np.nan, 0).median() for algo in population]
 
@@ -235,11 +235,11 @@ class GeneticAlgorithm:
         _price.index.name = 'date'
         
         if self.direction == 'L':
-            pf = vbt.Portfolio.from_signals(_price, entries=entries, exits=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, exits=exits, fees=0.001, size=10)
         elif self.direction == 'S':
-            pf = vbt.Portfolio.from_signals(_price, short_entries=entries, short_exits=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, short_entries=entries, short_exits=exits, fees=0.001, size=10)
         elif self.direction == 'LS':
-            pf = vbt.Portfolio.from_signals(_price, entries=entries, short_entries=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, short_entries=exits, fees=0.001, size=10)
         
         trades = pf.trades.records_readable
         trades = trades[trades.Status == 'Closed']
@@ -312,10 +312,10 @@ class GeneticAlgorithm:
         _price.index.name = 'date'
         
         if self.direction == 'L':
-            pf = vbt.Portfolio.from_signals(_price, entries=entries, exits=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, exits=exits, fees=0.001, size=10)
         elif self.direction == 'S':
-            pf = vbt.Portfolio.from_signals(_price, short_entries=entries, short_exits=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, short_entries=entries, short_exits=exits, fees=0.001, size=10)
         elif self.direction == 'LS':
-            pf = vbt.Portfolio.from_signals(_price, entries=entries, short_entries=exits, fees=0.001)
+            pf = vbt.Portfolio.from_signals(_price, entries=entries, short_entries=exits, fees=0.001, size=10)
 
         return pf
